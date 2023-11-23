@@ -26,15 +26,15 @@ member n (TriNode n1 n2 l m r)
   |n > n1 && n < n2 = member n m 
   |otherwise = member n r
 
-height :: Ord a => TriTree a -> a -> Int
-height Nil n = 0
-height (BiNode n1 Nil Nil) n
-  |n == n1 = 1
-  |otherwise = 0
+height :: Ord a => TriTree a -> Int 
+height = \t -> 
+  case t of
+      Nil -> -1
 
-height (TriNode n1 n2 l m r) n
-  |member n (TriNode n1 n2 l m r) == False = 0
-  |n == n1 || n == n2 = 1
-  |n < n1 = 1 + height l n
-  |n > n1 && n < n2 = 1 + height m n 
-  |otherwise = 1 + height r n
+      (BiNode x Nil Nil) -> 1
+
+      (TriNode _ _ l m r) | height l >= height m && height l >= height r -> height l + 1
+
+      (TriNode _ _ l m r) | height m >= height l && height m >= height r -> height m + 1
+
+      (TriNode _ _ l m r) | height r >= height l && height r >= height m -> height r + 1
